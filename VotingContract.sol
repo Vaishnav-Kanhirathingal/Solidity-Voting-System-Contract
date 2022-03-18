@@ -25,7 +25,8 @@ contract VotingContract {
         uint256 i;
         for (i = 0; i < addressStorage.length; i++) {
             if (messageSender == addressStorage[i]) {
-                a = true;
+                a = false;
+                //set to false for testing purposes. This allows using the same account for multiple votes
             }
         }
         require(a == false, "Your vote has already been registered");
@@ -40,21 +41,25 @@ contract VotingContract {
     }
 
     //convertor-function-from-stack
-    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
+    function uint2str(uint256 _i)
+        internal
+        pure
+        returns (string memory _uintAsString)
+    {
         if (_i == 0) {
             return "0";
         }
-        uint j = _i;
-        uint len;
+        uint256 j = _i;
+        uint256 len;
         while (j != 0) {
             len++;
             j /= 10;
         }
         bytes memory bstr = new bytes(len);
-        uint k = len;
+        uint256 k = len;
         while (_i != 0) {
-            k = k-1;
-            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
+            k = k - 1;
+            uint8 temp = (48 + uint8(_i - (_i / 10) * 10));
             bytes1 b1 = bytes1(temp);
             bstr[k] = b1;
             _i /= 10;
@@ -74,7 +79,10 @@ contract VotingContract {
             abi.encodePacked("\nParty Two Votes   -\t", uint2str(partyTwoVotes))
         );
         string memory party3 = string(
-            abi.encodePacked("\nParty Three Votes -\t", uint2str(partyThreeVotes))
+            abi.encodePacked(
+                "\nParty Three Votes -\t",
+                uint2str(partyThreeVotes)
+            )
         );
         string memory returnable = string(
             abi.encodePacked(party1, party2, party3)
