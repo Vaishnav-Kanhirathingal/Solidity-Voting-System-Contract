@@ -73,16 +73,13 @@ contract VotingContract {
 
     function getElectionDetails() public view returns (string memory) {
         string memory party1 = string(
-            abi.encodePacked("\nParty One Votes   -\t", uint2str(partyOneVotes))
+            abi.encodePacked("[Party 1 Votes = ", uint2str(partyOneVotes),"]-----[")
         );
         string memory party2 = string(
-            abi.encodePacked("\nParty Two Votes   -\t", uint2str(partyTwoVotes))
+            abi.encodePacked("Party 2 Votes = ", uint2str(partyTwoVotes),"]-----[")
         );
         string memory party3 = string(
-            abi.encodePacked(
-                "\nParty Three Votes -\t",
-                uint2str(partyThreeVotes)
-            )
+            abi.encodePacked("Party 3 Votes = ", uint2str(partyThreeVotes),"]")
         );
         string memory returnable = string(
             abi.encodePacked(party1, party2, party3)
