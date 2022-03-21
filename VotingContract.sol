@@ -20,17 +20,9 @@ contract VotingContract {
             num < 4 && num > 0,
             "the given number is invalid as the number is out of range"
         );
-        bool a = false;
-        address messageSender = msg.sender;
-        uint256 i;
-        for (i = 0; i < addressStorage.length; i++) {
-            if (messageSender == addressStorage[i]) {
-                a = false;
-                //set to false for testing purposes. This allows using the same account for multiple votes
-            }
-        }
-        require(a == false, "Your vote has already been registered");
-        addressStorage.push(messageSender);
+        /*------------uncomment the requirement code to enable one person one vote------------*/
+        // require(!hasAlreadyVoted());
+        addressStorage.push(msg.sender);
         if (num == 1) {
             partyOneVotes++;
         } else if (num == 2) {
@@ -40,18 +32,30 @@ contract VotingContract {
         }
     }
 
+    function hasAlreadyVoted() public view returns (bool) {
+        address messageSender = msg.sender;
+        uint256 i;
+        for (i = 0; i < addressStorage.length; i++) {
+            if (messageSender == addressStorage[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     function getAddressValues() public view returns (address[] memory) {
         return addressStorage;
     }
 
-    function getPartyOneVotes() public view returns (uint256){
+    function getParty1Votes() public view returns (uint256) {
         return partyOneVotes;
     }
-    function getPartyTwoVotes() public view returns (uint256){
+
+    function getParty2Votes() public view returns (uint256) {
         return partyTwoVotes;
     }
-    function getPartyThreeVotes() public view returns (uint256){
+
+    function getParty3Votes() public view returns (uint256) {
         return partyThreeVotes;
     }
-    
 }
