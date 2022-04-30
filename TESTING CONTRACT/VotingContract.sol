@@ -17,7 +17,7 @@ contract VotingContract {
     }
 
     function addMeToVotedList() public {
-        require(!addressMapping[msg.sender], "You Have Already Been Added");
+        require(!hasAlreadyVoted(), "You Have Already Been Added");
         addressMapping[msg.sender] = true;
         addressStorage.push(msg.sender);
     }
@@ -27,9 +27,8 @@ contract VotingContract {
             num < 4 && num > 0,
             "the given number is invalid as the number is out of range"
         );
-        /*------------uncomment the requirement code to enable one person one vote------------*/
-        // require(!hasAlreadyVoted());
-        // addMeToVotedList();
+        require(!hasAlreadyVoted());
+        addMeToVotedList();
         if (num == 1) {
             partyOneVotes++;
         } else if (num == 2) {
@@ -40,7 +39,8 @@ contract VotingContract {
     }
 
     function hasAlreadyVoted() public view returns (bool) {
-        return addressMapping[msg.sender];
+        return false;
+        // return addressMapping[msg.sender];
     }
 
     function getAddressValues() public view returns (address[] memory) {
